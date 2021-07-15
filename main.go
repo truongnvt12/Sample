@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -12,7 +11,6 @@ import (
 )
 
 func main() {
-	os := os.Getenv("PORT")
 	mongo := driver.ConnectMongoDB("mongodb+srv://truongnv:1234@cluster0.2f1oc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 	userRepo := repoimpl.NewUserRepoMongo(mongo.Client.Database("go"))
 
@@ -25,5 +23,5 @@ func main() {
 	//server.POST("/Login", controllers.Login
 	IsLoggedIn := middleware.JWT([]byte("secret"))
 	handler.NewUserHandler(server, userRepo, IsLoggedIn)
-	server.Logger.Fatal(server.Start(":" + os))
+	server.Logger.Fatal(server.Start(":80"))
 }
